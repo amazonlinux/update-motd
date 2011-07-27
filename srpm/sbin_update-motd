@@ -15,18 +15,15 @@
 # and limitations under the License.
 ################################################################################
 
-if [ "$EUID" -ne 0 ]; then
+if [ $(/usr/bin/id -u) -ne 0 ]; then
     echo "You are not root"
     exit 1
 fi
 
-# Continue if there is a failure
-set +e
-
 if [ -d /etc/update-motd.d ]; then
-    rm -f /var/run/motd.tmp
+    TMPFILE=$(mktemp -p /var/run motd.XXXXX)
     if [ -f /etc/motd.head ]; then
-        cat /etc/motd.head >> /var/run/motd.tmp
+        cat /etc/motd.head >> $TMPFILE
     fi
     # Simulated run-parts, wildcards in bash are expanded sorted
     # Skip files ending in ~ or ,
@@ -34,10 +31,24 @@ if [ -d /etc/update-motd.d ]; then
         # Skip .rpmnew, etc.
         [[ $part =~ \.rpm* ]] && continue
         # Run only if it's a regular file and executable
-        [ -f $part ] && [ -x $part ] && $part >> /var/run/motd.tmp
+        if [ -f $part ] && [ -x $part ]; then
+            TMPPART=$(mktemp motd.partXXXXX)
+            if ($part > $TMPPART); then
+                cat $TMPPART >> $TMPFILE
+            fi
+            rm -f $TMPPART
+        fi
     done
     if [ -f /etc/motd.tail ]; then
-        cat /etc/motd.tail >> /var/run/motd.tmp
+        cat /etc/motd.tail >> $TMPFILE
     fi
-    mv /var/run/motd.tmp /var/run/motd
+    # Only actually do the replacement if there is something in there
+    if [ -s $TMPFILE ]; then
+        # mktemp creates files with only user read-write permissions
+        chmod go+r $TMPFILE
+        mv $TMPFILE /var/run/motd
+    else
+        # Don't leave temp files
+        rm -f $TMPFILE
+    fi
 fi
