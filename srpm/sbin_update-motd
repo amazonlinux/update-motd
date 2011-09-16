@@ -20,6 +20,30 @@ if [ $(/usr/bin/id -u) -ne 0 ]; then
     exit 1
 fi
 
+# Parse the few supported options
+case "$1" in
+    --enable)
+        rm -f /var/lib/update-motd/disabled
+        exit 0;;
+    --disable)
+        mkdir -p /var/lib/update-motd/
+        touch /var/lib/update-motd/disabled
+        exit 0;;
+    '' | --force);;
+    *)
+        echo "update-motd [option]"
+        echo "    --disable: Disable update-motd"
+        echo "    --enable: Enable update-motd"
+        echo "    --force: Ignore disabled setting"
+        exit 1;;
+esac
+
+# Just exit if update-motd is disabled and --force wasn't passed
+if [ -e /var/lib/update-motd/disabled ] && [ "$1" != "--force" ]
+then
+    exit 0
+fi
+
 if [ -d /etc/update-motd.d ]; then
     TMPFILE=$(mktemp -p /var/run motd.XXXXX)
     if [ -f /etc/motd.head ]; then
