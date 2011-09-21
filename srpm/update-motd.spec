@@ -46,6 +46,8 @@ if [ "$1" = "1" ]; then
     ln -snf /var/lib/update-motd/motd /etc/motd
 elif [ "$1" = "2" ]; then
     if [ -e /etc/motd ] && [ "$(readlink /etc/motd)" = "/var/run/motd" ]; then
+        # Copy the current motd
+        cp -L /etc/motd /var/lib/update-motd/motd
         ln -snf /var/lib/update-motd/motd /etc/motd
     fi
 fi
