@@ -44,6 +44,10 @@ if [ "$1" = "1" ]; then
         cp -L /etc/motd.rpmsave /var/lib/update-motd/motd
     fi
     ln -snf /var/lib/update-motd/motd /etc/motd
+elif [ "$1" = "2" ]; then
+    if [ -e /etc/motd ] && [ "$(readlink /etc/motd)" = "/var/run/motd" ]; then
+        ln -snf /var/lib/update-motd/motd /etc/motd
+    fi
 fi
 # We don't run update-motd on install because the various update-motd.d scripts
 # are not installed yet (since their packages will depend on this one).
