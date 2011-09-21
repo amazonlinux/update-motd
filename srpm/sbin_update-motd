@@ -45,7 +45,7 @@ then
 fi
 
 if [ -d /etc/update-motd.d ]; then
-    TMPFILE=$(mktemp -p /var/run motd.XXXXX)
+    TMPFILE=$(mktemp -p /var/tmp motd.XXXXX)
     if [ -f /etc/motd.head ]; then
         cat /etc/motd.head >> $TMPFILE
     fi
@@ -70,7 +70,7 @@ if [ -d /etc/update-motd.d ]; then
     if [ -s $TMPFILE ]; then
         # mktemp creates files with only user read-write permissions
         chmod go+r $TMPFILE
-        mv $TMPFILE /var/run/motd
+        mv $TMPFILE /var/lib/update-motd/motd
     else
         # Don't leave temp files
         rm -f $TMPFILE

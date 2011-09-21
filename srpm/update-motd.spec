@@ -28,8 +28,8 @@ install -D -m 0444 %{SOURCE2} %{buildroot}/etc/init/update-motd.conf
 install -D -m 0444 %{SOURCE3} %{buildroot}/usr/lib/yum-plugins/update-motd.py
 install -D -m 0444 %{SOURCE4} %{buildroot}/etc/yum/pluginconf.d/update-motd.conf
 # for %ghost
-install -d %{buildroot}/var/run
-touch %{buildroot}/var/run/motd
+install -d %{buildroot}/var/lib/update-motd
+touch %{buildroot}/var/lib/update-motd/motd
 
 %clean
 rm -rf %{buildroot}
@@ -38,12 +38,12 @@ rm -rf %{buildroot}
 # Only run this on initial install
 if [ "$1" = "1" ]; then
     # Backup the current MOTD
-    if [ -e /etc/motd ] && [ "$(readlink /etc/motd)" != "/var/run/motd" ]; then
-        cp /etc/motd /etc/motd.rpmsave
+    if [ -e /etc/motd ] && [ "$(readlink /etc/motd)" != "/var/lib/update-motd/motd" ]; then
+        mv /etc/motd /etc/motd.rpmsave
         # And let it be the MOTD until update-motd gets run
-        mv /etc/motd /var/run/motd
+        cp -L /etc/motd.rpmsave /var/lib/update-motd/motd
     fi
-    ln -snf /var/run/motd /etc/motd
+    ln -snf /var/lib/update-motd/motd /etc/motd
 fi
 # We don't run update-motd on install because the various update-motd.d scripts
 # are not installed yet (since their packages will depend on this one).
@@ -52,11 +52,12 @@ fi
 %files
 %defattr(-,root,root,-)
 %dir /etc/update-motd.d
+%dir /var/lib/update-motd
 %config /etc/cron.daily/update-motd
 %config /etc/init/update-motd.conf
 %config /etc/yum/pluginconf.d/update-motd.conf
 /usr/sbin/update-motd
 /usr/lib/yum-plugins/update-motd.py*
-%ghost /var/run/motd
+%ghost /var/lib/update-motd/motd
 
 %changelog
