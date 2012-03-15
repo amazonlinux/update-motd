@@ -1,2 +1,2 @@
 #!/bin/bash
-start update-motd
+start --quiet update-motd
