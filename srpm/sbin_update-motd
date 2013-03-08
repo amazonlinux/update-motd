@@ -45,7 +45,7 @@ then
 fi
 
 if [ -d /etc/update-motd.d ]; then
-    TMPFILE=$(mktemp -p /var/tmp motd.XXXXX)
+    TMPFILE=$(mktemp --tmpdir motd.XXXXX)
     if [ -f /etc/motd.head ]; then
         cat /etc/motd.head >> $TMPFILE
     fi
@@ -56,7 +56,7 @@ if [ -d /etc/update-motd.d ]; then
         [[ $part =~ \.rpm* ]] && continue
         # Run only if it's a regular file and executable
         if [ -f $part ] && [ -x $part ]; then
-            TMPPART=$(mktemp motd.partXXXXX)
+            TMPPART=$(mktemp --tmpdir motd.partXXXXX)
             if ($part > $TMPPART); then
                 cat $TMPPART >> $TMPFILE
             fi
