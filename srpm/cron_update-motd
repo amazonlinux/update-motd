@@ -1,2 +1,4 @@
-#!/bin/bash
-start --quiet update-motd
+# Delay a random time between 0 and 360 minutes (6 hours) to avoid having all
+# instances update at the same time.
+RANDOM_DELAY=360
+@daily start --quiet update-motd

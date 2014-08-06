@@ -1,6 +1,6 @@
 Name:       update-motd
 Version:    1.0.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 License:    ASL 2.0
 Summary:    Framework for dynamically generating MOTD
 Group:      System Environment/Base
@@ -16,14 +16,14 @@ Source3:    yum_update-motd.py
 Source4:    yum_update-motd.conf
 
 %description
-Framework and scripts for producing a dynamically generated Message Of The Day. 
+Framework and scripts for producing a dynamically generated Message Of The Day.
 Based on and compatible with the framework implemented Ubuntu.
 
 %install
 rm -rf %{buildroot}
 install -d %{buildroot}/etc/update-motd.d
 install -D -m 0755 %{SOURCE0} %{buildroot}/usr/sbin/update-motd
-install -D -m 0755 %{SOURCE1} %{buildroot}/etc/cron.daily/update-motd
+install -D -m 0755 %{SOURCE1} %{buildroot}/etc/cron.d/update-motd
 install -D -m 0444 %{SOURCE2} %{buildroot}/etc/init/update-motd.conf
 install -D -m 0444 %{SOURCE3} %{buildroot}/usr/lib/yum-plugins/update-motd.py
 install -D -m 0444 %{SOURCE4} %{buildroot}/etc/yum/pluginconf.d/update-motd.conf
@@ -59,7 +59,7 @@ fi
 %defattr(-,root,root,-)
 %dir /etc/update-motd.d
 %dir /var/lib/update-motd
-%config /etc/cron.daily/update-motd
+%config /etc/cron.d/update-motd
 %config /etc/init/update-motd.conf
 %config /etc/yum/pluginconf.d/update-motd.conf
 /usr/sbin/update-motd
