@@ -1,6 +1,6 @@
 Name:       update-motd
 Version:    1.0.1
-Release:    2%{?dist}
+Release:    3%{?dist}
 License:    ASL 2.0
 Summary:    Framework for dynamically generating MOTD
 Group:      System Environment/Base
@@ -23,10 +23,10 @@ Based on and compatible with the framework implemented Ubuntu.
 rm -rf %{buildroot}
 install -d %{buildroot}/etc/update-motd.d
 install -D -m 0755 %{SOURCE0} %{buildroot}/usr/sbin/update-motd
-install -D -m 0755 %{SOURCE1} %{buildroot}/etc/cron.d/update-motd
-install -D -m 0444 %{SOURCE2} %{buildroot}/etc/init/update-motd.conf
-install -D -m 0444 %{SOURCE3} %{buildroot}/usr/lib/yum-plugins/update-motd.py
-install -D -m 0444 %{SOURCE4} %{buildroot}/etc/yum/pluginconf.d/update-motd.conf
+install -D -m 0644 %{SOURCE1} %{buildroot}/etc/cron.d/update-motd
+install -D -m 0644 %{SOURCE2} %{buildroot}/etc/init/update-motd.conf
+install -D -m 0644 %{SOURCE3} %{buildroot}/usr/lib/yum-plugins/update-motd.py
+install -D -m 0644 %{SOURCE4} %{buildroot}/etc/yum/pluginconf.d/update-motd.conf
 # for %ghost
 install -d %{buildroot}/var/lib/update-motd
 touch %{buildroot}/var/lib/update-motd/motd
