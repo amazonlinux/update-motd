@@ -7,11 +7,12 @@ Group:      System Environment/Base
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:  noarch
 Requires:   bash coreutils
-Requires:   upstart
+BuildRequires: systemd-devel
+%{?systemd_requires}
 
 Source0:    sbin_update-motd
 Source1:    cron_update-motd
-Source2:    upstart_update-motd.conf
+Source2:    update-motd.service
 Source3:    yum_update-motd.py
 Source4:    yum_update-motd.conf
 
@@ -24,7 +25,7 @@ rm -rf %{buildroot}
 install -d %{buildroot}/etc/update-motd.d
 install -D -m 0755 %{SOURCE0} %{buildroot}/usr/sbin/update-motd
 install -D -m 0644 %{SOURCE1} %{buildroot}/etc/cron.d/update-motd
-install -D -m 0644 %{SOURCE2} %{buildroot}/etc/init/update-motd.conf
+install -D -m 0644 %{SOURCE2} %{buildroot}%{_unitdir}/update-motd.service
 install -D -m 0644 %{SOURCE3} %{buildroot}/usr/lib/yum-plugins/update-motd.py
 install -D -m 0644 %{SOURCE4} %{buildroot}/etc/yum/pluginconf.d/update-motd.conf
 # for %ghost
@@ -51,16 +52,21 @@ elif [ "$1" = "2" ]; then
         ln -snf /var/lib/update-motd/motd /etc/motd
     fi
 fi
-# We don't run update-motd on install because the various update-motd.d scripts
-# are not installed yet (since their packages will depend on this one).
-# This could also be the case in an upgrade situation, so we leave it to cron.
+%systemd_post update-motd.service sshd.socket
+
+%preun
+%systemd_preun update-motd.service sshd.socket
+
+%postun
+%systemd_postun_with_restart update-motd.service
+
 
 %files
 %defattr(-,root,root,-)
 %dir /etc/update-motd.d
 %dir /var/lib/update-motd
 %config /etc/cron.d/update-motd
-%config /etc/init/update-motd.conf
+%config %{_unitdir}/update-motd.service
 %config /etc/yum/pluginconf.d/update-motd.conf
 /usr/sbin/update-motd
 /usr/lib/yum-plugins/update-motd.py*

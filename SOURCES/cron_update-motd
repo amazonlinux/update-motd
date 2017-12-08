@@ -1,4 +1,4 @@
 # Delay a random time between 0 and 360 minutes (6 hours) to avoid having all
 # instances update at the same time.
 RANDOM_DELAY=360
-@daily root /sbin/start --quiet update-motd
+@daily root /usr/bin/systemctl --quiet restart update-motd

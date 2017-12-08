@@ -1,0 +1,11 @@
+[Unit]
+Description=Dynamically Generate Message Of The Day
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/update-motd
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
