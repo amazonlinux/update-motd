@@ -1,6 +1,6 @@
 Name:       update-motd
-Version:    1.0.1
-Release:    3%{?dist}
+Version:    1.1.0
+Release:    1%{?dist}
 License:    ASL 2.0
 Summary:    Framework for dynamically generating MOTD
 Group:      System Environment/Base

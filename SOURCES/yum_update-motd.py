@@ -20,6 +20,6 @@ plugin_type = (TYPE_CORE)
 def posttrans_hook(conduit):
     try:
         if not os.path.exists('/var/lib/update-motd/disabled'):
-            subprocess.Popen(['/sbin/start', '--quiet', 'update-motd'], stdout=open('/dev/null', 'w'), stderr=subprocess.STDOUT)
+            subprocess.Popen(['/usr/bin/systemctl', 'try-restart', '--quiet', 'update-motd'], stdout=open('/dev/null', 'w'), stderr=subprocess.STDOUT)
     except:
         return
