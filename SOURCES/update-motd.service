@@ -4,6 +4,8 @@ After=network-online.target
 
 [Service]
 Type=oneshot
+TimeoutStartSec=300
+ExecStartPre=-/bin/sleep 240
 ExecStart=/usr/sbin/update-motd
 RemainAfterExit=yes
 
