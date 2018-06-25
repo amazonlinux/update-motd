@@ -58,7 +58,11 @@ fi
 %systemd_preun update-motd.service sshd.socket
 
 %postun
-%systemd_postun_with_restart update-motd.service
+systemctl daemon-reload >/dev/null 2>&1 || :
+if [ $1 -ge 1 ] ; then
+	# 1 = Package upgrade, not uninstall
+	systemctl try-restart update-motd.service sshd.socket --no-block >/dev/null 2>&1 || :
+fi
 
 
 %files
