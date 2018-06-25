@@ -52,16 +52,16 @@ elif [ "$1" = "2" ]; then
         ln -snf /var/lib/update-motd/motd /etc/motd
     fi
 fi
-%systemd_post update-motd.service sshd.socket
+%systemd_post update-motd.service
 
 %preun
-%systemd_preun update-motd.service sshd.socket
+%systemd_preun update-motd.service
 
 %postun
 systemctl daemon-reload >/dev/null 2>&1 || :
 if [ $1 -ge 1 ] ; then
 	# 1 = Package upgrade, not uninstall
-	systemctl try-restart update-motd.service sshd.socket --no-block >/dev/null 2>&1 || :
+	systemctl try-restart update-motd.service --no-block >/dev/null 2>&1 || :
 fi
 
 
