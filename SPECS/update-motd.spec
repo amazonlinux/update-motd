@@ -1,12 +1,13 @@
 Name:       update-motd
 Version:    1.1.1
-Release:    1%{?dist}
+Release:    2%{?dist}
 License:    ASL 2.0
 Summary:    Framework for dynamically generating MOTD
 Group:      System Environment/Base
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:  noarch
 Requires:   bash coreutils
+Requires:   system-release >= 1:2-4.amzn2
 BuildRequires: systemd-devel
 %{?systemd_requires}
 
