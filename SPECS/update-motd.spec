@@ -7,6 +7,7 @@ Group:      System Environment/Base
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:  noarch
 Requires:   bash coreutils
+Requires:   system-release >= 2-4.amzn2
 BuildRequires: systemd-devel
 %{?systemd_requires}
 
