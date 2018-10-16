@@ -73,4 +73,52 @@ fi
 %ghost /var/lib/update-motd/motd
 
 %changelog
+* Tue Oct 16 2018 iliana weller <iweller@amazon.com> - 1.1.2-2
+- Don't create an empty /etc/motd.rpmsave
 
+* Mon Jul  9 2018 Chad Miller <millchad@amazon.com> - 1.1.2-1
+- Avoid deadlock with systemctlreload-thispackage and Wants:
+  cloud-final-which-called-us-to-reload
+
+* Mon Jun 25 2018 Chad Miller <millchad@amazon.com> - 1.1.1-2
+- Require the system-release that doesn't hang before installing
+- Do not touch sshd's service when install/upgrade/remove update-motd
+- Give each hook 10 seconds to finish
+
+* Fri Jun 22 2018 Chad Miller <millchad@amazon.com> - 1.1.1-1
+- Don't sleep, but add optional dependence ordering with cloud-init
+
+* Mon Jun 18 2018 Chad Miller <millchad@amazon.com> - 1.1.1-1
+- Don't start motd yum before cloud-init has a chance to start
+
+* Fri Dec 22 2017 Chad Miller <millchad@amazon.com> - 1.1.0-1
+- Systemdify yum plugin
+
+* Thu Dec  7 2017 Jason Green <jasg@amazon.com>
+- Update for systemd
+
+* Fri Oct 31 2014 Andrew Jorgensen <ajorgens@amazon.com>
+- Fix cron job per cronie requirements
+
+* Wed Aug 06 2014 Andrew Jorgensen <ajorgens@amazon.com>
+- Move cron job from cron.daily to cron.d and add a random delay
+
+* Fri Mar 08 2013 Andrew Jorgensen <ajorgens@amazon.com>
+- Use --tmpdir when creating temporary files with mktemp
+
+* Thu Mar 15 2012 Andrew Jorgensen <ajorgens@amazon.com>
+- Use --quiet when calling start update-motd
+
+* Wed Sep 21 2011 Andrew Jorgensen <ajorgens@amazon.com>
+- Copy the current motd on upgrade
+- Add an upgrade case to %post
+- Use /var/lib/update-motd instead of /var/run
+
+* Fri Sep 16 2011 Andrew Jorgensen <ajorgens@amazon.com>
+- Add a yum plugin to call update-motd after an rpm transaction, and support for disabling updates
+
+* Wed Jul 27 2011 Andrew Jorgensen <ajorgens@amazon.com>
+- Various improvements
+
+* Thu Jul 21 2011 Andrew Jorgensen <ajorgens@amazon.com>
+- Initial version
