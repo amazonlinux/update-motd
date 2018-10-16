@@ -1,6 +1,6 @@
 Name:       update-motd
 Version:    1.1.2
-Release:    1%{?dist}
+Release:    2%{?dist}
 License:    ASL 2.0
 Summary:    Framework for dynamically generating MOTD
 Group:      System Environment/Base
@@ -39,19 +39,14 @@ rm -rf %{buildroot}
 %post
 # Only run this on initial install
 if [ "$1" = "1" ]; then
+    touch /var/lib/update-motd/motd
     # Backup the current MOTD
-    if [ -e /etc/motd ] && [ "$(readlink /etc/motd)" != "/var/lib/update-motd/motd" ]; then
+    if [ -s /etc/motd -o -L /etc/motd ] && [ "$(readlink /etc/motd)" != "/var/lib/update-motd/motd" ]; then
         mv /etc/motd /etc/motd.rpmsave
         # And let it be the MOTD until update-motd gets run
         cp -L /etc/motd.rpmsave /var/lib/update-motd/motd
     fi
     ln -snf /var/lib/update-motd/motd /etc/motd
-elif [ "$1" = "2" ]; then
-    if [ -e /etc/motd ] && [ "$(readlink /etc/motd)" = "/var/run/motd" ]; then
-        # Copy the current motd
-        cp -L /etc/motd /var/lib/update-motd/motd
-        ln -snf /var/lib/update-motd/motd /etc/motd
-    fi
 fi
 %systemd_post update-motd.service
 
