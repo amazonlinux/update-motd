@@ -1,6 +1,8 @@
+%global _trivial .0
+%global _buildid .1
 Name:       update-motd
 Version:    1.1.2
-Release:    2%{?dist}
+Release:    2%{?dist}%{?_trivial}%{?_buildid}
 License:    ASL 2.0
 Summary:    Framework for dynamically generating MOTD
 Group:      System Environment/Base
@@ -73,6 +75,9 @@ fi
 %ghost /var/lib/update-motd/motd
 
 %changelog
+* Tue Apr 20 2021 Sonia Xu <sonix@amazon.com> - 1.1.2-2.amzn2.0.1
+- Changed the random delay to 24 hours from 6 hours
+
 * Tue Oct 16 2018 iliana weller <iweller@amazon.com> - 1.1.2-2
 - Don't create an empty /etc/motd.rpmsave
 
