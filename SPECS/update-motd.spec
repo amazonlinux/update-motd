@@ -1,5 +1,5 @@
 %global _trivial .0
-%global _buildid .1
+%global _buildid .2
 Name:       update-motd
 Version:    1.1.2
 Release:    2%{?dist}%{?_trivial}%{?_buildid}
@@ -75,6 +75,9 @@ fi
 %ghost /var/lib/update-motd/motd
 
 %changelog
+* Mon Jun 07 2021 Sonia Xu <sonix@amazon.com> - 1.1.2-2.amzn2.0.2
+- Changed the timeout to 30 from 10 seconds in update-motd script
+
 * Tue Apr 20 2021 Sonia Xu <sonix@amazon.com> - 1.1.2-2.amzn2.0.1
 - Changed the random delay to 24 hours from 6 hours
 
