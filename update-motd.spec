@@ -1,23 +1,18 @@
-%global _trivial .0
-%global _buildid .2
 Name:       update-motd
-Version:    1.1.2
-Release:    2%{?dist}%{?_trivial}%{?_buildid}
+Version:    2.0
+Release:    1%{?dist}%{?_trivial}%{?_buildid}
 License:    ASL 2.0
 Summary:    Framework for dynamically generating MOTD
 Group:      System Environment/Base
-BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:  noarch
 Requires:   bash coreutils
-Requires:   system-release >= 1:2-4.amzn2
+Requires:   system-release >= 2022
 BuildRequires: systemd-devel
 %{?systemd_requires}
 
 Source0:    sbin_update-motd
 Source1:    cron_update-motd
 Source2:    update-motd.service
-Source3:    yum_update-motd.py
-Source4:    yum_update-motd.conf
 
 %description
 Framework and scripts for producing a dynamically generated Message Of The Day.
@@ -29,8 +24,6 @@ install -d %{buildroot}/etc/update-motd.d
 install -D -m 0755 %{SOURCE0} %{buildroot}/usr/sbin/update-motd
 install -D -m 0644 %{SOURCE1} %{buildroot}/etc/cron.d/update-motd
 install -D -m 0644 %{SOURCE2} %{buildroot}%{_unitdir}/update-motd.service
-install -D -m 0644 %{SOURCE3} %{buildroot}/usr/lib/yum-plugins/update-motd.py
-install -D -m 0644 %{SOURCE4} %{buildroot}/etc/yum/pluginconf.d/update-motd.conf
 # for %ghost
 install -d %{buildroot}/var/lib/update-motd
 touch %{buildroot}/var/lib/update-motd/motd
@@ -69,12 +62,13 @@ fi
 %dir /var/lib/update-motd
 %config /etc/cron.d/update-motd
 %config %{_unitdir}/update-motd.service
-%config /etc/yum/pluginconf.d/update-motd.conf
 /usr/sbin/update-motd
-/usr/lib/yum-plugins/update-motd.py*
 %ghost /var/lib/update-motd/motd
 
 %changelog
+* Mon Oct 18 2021 Stewart Smith <trawets@amazon.com> - 2.0-1
+- Initial build for AL2022
+
 * Mon Jun 07 2021 Sonia Xu <sonix@amazon.com> - 1.1.2-2.amzn2.0.2
 - Changed the timeout to 30 from 10 seconds in update-motd script
 
