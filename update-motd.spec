@@ -1,5 +1,5 @@
 %define _trivial	.0
-%define _buildid	.1
+%define _buildid	.2
 Name:       update-motd
 Version:    2.0
 Release:    1%{?dist}%{?_trivial}%{?_buildid}
