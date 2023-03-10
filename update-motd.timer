@@ -1,0 +1,11 @@
+[Unit]
+Description=Timer for Dynamically Generate Message Of The Day
+
+[Timer]
+OnUnitActiveSec=720min
+RandomizedDelaySec=720min
+FixedRandomDelay=true
+Persistent=true
+
+[Install]
+WantedBy=timers.target

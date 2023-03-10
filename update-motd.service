@@ -1,11 +1,15 @@
 [Unit]
 Description=Dynamically Generate Message Of The Day
-After=network-online.target
+# running update-motd.service after cloud-final.service, which will be later in the boot process
+# this is to avoid running update-motd at the same time with other services such as dnf activities in userdata scripts
+After=network-online.target cloud-final.service
 
 [Service]
 Type=oneshot
 ExecStart=/usr/sbin/update-motd
-RemainAfterExit=yes
+# update-motd should not be considered active when its processes have exited
+# timer should be able to restart update-motd even after exit
+RemainAfterExit=no
 
 [Install]
 WantedBy=multi-user.target

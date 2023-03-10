@@ -1,5 +1,5 @@
 %define _trivial	.0
-%define _buildid	.2
+%define _buildid	.3
 Name:       update-motd
 Version:    2.0
 Release:    1%{?dist}%{?_trivial}%{?_buildid}
@@ -13,7 +13,7 @@ BuildRequires: systemd-devel
 %{?systemd_requires}
 
 Source0:    sbin_update-motd
-Source1:    cron_update-motd
+Source1:    update-motd.timer
 Source2:    update-motd.service
 
 %description
@@ -24,7 +24,7 @@ Based on and compatible with the framework implemented Ubuntu.
 rm -rf %{buildroot}
 install -d %{buildroot}/etc/update-motd.d
 install -D -m 0755 %{SOURCE0} %{buildroot}/usr/sbin/update-motd
-install -D -m 0644 %{SOURCE1} %{buildroot}/etc/cron.d/update-motd
+install -D -m 0644 %{SOURCE1} %{buildroot}%{_unitdir}/update-motd.timer
 install -D -m 0644 %{SOURCE2} %{buildroot}%{_unitdir}/update-motd.service
 # for %ghost
 install -d %{buildroot}/var/lib/update-motd
@@ -62,8 +62,7 @@ fi
 %defattr(-,root,root,-)
 %dir /etc/update-motd.d
 %dir /var/lib/update-motd
-%config /etc/cron.d/update-motd
-%config %{_unitdir}/update-motd.service
+%config %{_unitdir}/update-motd.{service,timer}
 /usr/sbin/update-motd
 %ghost /var/lib/update-motd/motd
 
