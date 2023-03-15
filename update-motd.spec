@@ -1,8 +1,6 @@
-%define _trivial	.0
-%define _buildid	.3
 Name:       update-motd
-Version:    2.0
-Release:    1%{?dist}%{?_trivial}%{?_buildid}
+Version:    2.1
+Release:    1%{?dist}
 License:    ASL 2.0
 Summary:    Framework for dynamically generating MOTD
 Group:      System Environment/Base
@@ -67,6 +65,21 @@ fi
 %ghost /var/lib/update-motd/motd
 
 %changelog
+* Wed Mar 15 2023 Stewart Smith <trawets@amazon.com> 2.1
+- Replace update-motd motd part even when it's zero sized
+- This fixes https://github.com/amazonlinux/amazon-linux-2023/issues/286
+
+* Thu Mar 09 2023 Nikhil Dikshit <nikhildi@amazon.com> 2.0-1.amzn2023.0.3
+- Migrated Cron job to Systemd timer
+- Trigger update-motd.service after cloud-final.service
+- Set RemainAfterExit=no on update-motd so that timer can restart it after exit
+
+* Thu Feb 02 2023 Stewart Smith <trawets@amazon.com> - 2.0-1.amzn2023.0.2
+- Mass rebuild for AL2023
+
+* Tue Oct 04 2022 Stewart Smith <trawets@amazon.com> - 2.0-1.amzn2022.0.1
+- AL2022 pre-GA mass rebuild
+
 * Mon Oct 18 2021 Stewart Smith <trawets@amazon.com> - 2.0-1
 - Initial build for AL2022
 
