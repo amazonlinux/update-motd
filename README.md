@@ -5,6 +5,14 @@ A simple framework for dynamically generating the Message Of The Day (`motd`)
 Framework and scripts for producing a dynamically generated Message Of The Day.
 Based on and compatible with the framework implemented Ubuntu.
 
+### Branches
+
+- The `amzn2` branch is what has been built in Amazon Linux 2
+- The `al2023` branch is what has been built in Amazon Linux 2023
+- The `main` branch is for any general development
+
+Any new development should be done on `main` and any bug fixes can be cherry-picked back.
+
 ### History
 
 The `update-motd` package first shipped with Amazon Linux AMI 2011.9 (now
