@@ -3,6 +3,7 @@ Version:    2.1
 Release:    1%{?dist}
 License:    ASL 2.0
 Summary:    Framework for dynamically generating MOTD
+URL:        https://github.com/amazonlinux/update-motd
 Group:      System Environment/Base
 BuildArch:  noarch
 Requires:   bash coreutils
