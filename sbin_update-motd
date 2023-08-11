@@ -45,7 +45,7 @@ then
 fi
 
 if [ -d /etc/update-motd.d ]; then
-    TMPFILE=$(mktemp --tmpdir motd.XXXXX)
+    TMPFILE=$(mktemp --tmpdir=/var/lib/update-motd/)
     if [ -f /etc/motd.head ]; then
         cat /etc/motd.head >> $TMPFILE
     fi

@@ -10,6 +10,27 @@ ExecStart=/usr/sbin/update-motd
 # update-motd should not be considered active when its processes have exited
 # timer should be able to restart update-motd even after exit
 RemainAfterExit=no
+PrivateTmp=yes
+ProtectHostname=yes
+ProtectHome=yes
+ProtectClock=yes
+RestrictRealtime=yes
+ProtectKernelTunables=yes
+PrivateDevices=yes
+ProtectSystem=full
+SystemCallFilter=~@reboot
+PrivateUsers=yes
+NoNewPrivileges=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectKernelModules=yes
+MemoryDenyWriteExecute=yes
+RestrictNamespaces=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictAddressFamilies=~AF_NETLINK
+RestrictAddressFamilies=~AF_PACKET
+CapabilityBoundingSet=
 
 [Install]
 WantedBy=multi-user.target

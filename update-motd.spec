@@ -1,3 +1,5 @@
+%define _trivial	.0
+%define _buildid	.1
 Name:       update-motd
 Version:    2.1
 Release:    1%{?dist}
@@ -66,6 +68,12 @@ fi
 %ghost /var/lib/update-motd/motd
 
 %changelog
+* Fri Aug 11 2023 Stephen A. Zarkos <szarkos@amazon.com> - 2.1-1.amzn2023.0.1
+- Copy the final $TMPFILE using 'mv -Z' to ensure the motd file inherits
+  the selinux context of the destination directory.
+- Lock down the update-motd.service file to remove unneeded permissions
+  and capabilities.
+
 * Wed Mar 15 2023 Stewart Smith <trawets@amazon.com> 2.1
 - Replace update-motd motd part even when it's zero sized
 - This fixes https://github.com/amazonlinux/amazon-linux-2023/issues/286
