@@ -1,7 +1,5 @@
-%define _trivial	.0
-%define _buildid	.1
 Name:       update-motd
-Version:    2.1
+Version:    2.2
 Release:    1%{?dist}
 License:    ASL 2.0
 Summary:    Framework for dynamically generating MOTD
@@ -68,6 +66,9 @@ fi
 %ghost /var/lib/update-motd/motd
 
 %changelog
+* Mon Feb 05 2024 Stewart Smith <trawets@amazon.com> - 2.2-1
+- Restrict startup and runtime CPU and IO usage
+
 * Fri Aug 11 2023 Stephen A. Zarkos <szarkos@amazon.com> - 2.1-1.amzn2023.0.1
 - Copy the final $TMPFILE using 'mv -Z' to ensure the motd file inherits
   the selinux context of the destination directory.

@@ -31,6 +31,17 @@ LockPersonality=yes
 RestrictAddressFamilies=~AF_NETLINK
 RestrictAddressFamilies=~AF_PACKET
 CapabilityBoundingSet=
+# slightly less than default 100, as other things are likely to be more critical for application setup,
+# but we don't want to starve getting out of the way
+StartupCPUWeight=90
+# Run with less priority than other tasks by default
+CPUWeight=50
+# limit to a quarter of a core
+CPUQuota=25
+# On startup, limit IO, but not by heaps
+StartupIOWeight=90
+# Run with less priority for IO than other task
+IOWeight=50
 
 [Install]
 WantedBy=multi-user.target
