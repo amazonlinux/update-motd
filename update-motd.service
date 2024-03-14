@@ -2,6 +2,7 @@
 Description=Dynamically Generate Message Of The Day
 # running update-motd.service after cloud-final.service, which will be later in the boot process
 # this is to avoid running update-motd at the same time with other services such as dnf activities in userdata scripts
+Wants=network-online.target cloud-final.service
 After=network-online.target cloud-final.service
 
 [Service]

@@ -1,5 +1,5 @@
 Name:       update-motd
-Version:    2.2
+Version:    2.3
 Release:    1%{?dist}
 License:    ASL 2.0
 Summary:    Framework for dynamically generating MOTD
@@ -17,17 +17,17 @@ Source2:    update-motd.service
 
 %description
 Framework and scripts for producing a dynamically generated Message Of The Day.
-Based on and compatible with the framework implemented Ubuntu.
+Based on and compatible with the framework implemented in Ubuntu.
 
 %install
 rm -rf %{buildroot}
-install -d %{buildroot}/etc/update-motd.d
-install -D -m 0755 %{SOURCE0} %{buildroot}/usr/sbin/update-motd
+install -d %{buildroot}%{_sysconfdir}/update-motd.d
+install -D -m 0755 %{SOURCE0} %{buildroot}%{_sbindir}/update-motd
 install -D -m 0644 %{SOURCE1} %{buildroot}%{_unitdir}/update-motd.timer
 install -D -m 0644 %{SOURCE2} %{buildroot}%{_unitdir}/update-motd.service
 # for %ghost
-install -d %{buildroot}/var/lib/update-motd
-touch %{buildroot}/var/lib/update-motd/motd
+install -d %{buildroot}%{_sharedstatedir}/update-motd
+touch %{buildroot}%{_sharedstatedir}/update-motd/motd
 
 %clean
 rm -rf %{buildroot}
@@ -35,14 +35,14 @@ rm -rf %{buildroot}
 %post
 # Only run this on initial install
 if [ "$1" = "1" ]; then
-    touch /var/lib/update-motd/motd
+    touch %{_sharedstatedir}/update-motd/motd
     # Backup the current MOTD
-    if [ -s /etc/motd -o -L /etc/motd ] && [ "$(readlink /etc/motd)" != "/var/lib/update-motd/motd" ]; then
-        mv /etc/motd /etc/motd.rpmsave
+    if [ -s %{_sysconfdir}/motd -o -L %{_sysconfdir}/motd ] && [ "$(readlink %{_sysconfdir}/motd)" != "%{_sharedstatedir}/update-motd/motd" ]; then
+        mv %{_sysconfdir}/motd %{_sysconfdir}/motd.rpmsave
         # And let it be the MOTD until update-motd gets run
-        cp -L /etc/motd.rpmsave /var/lib/update-motd/motd
+        cp -L %{_sysconfdir}/motd.rpmsave %{_sharedstatedir}/update-motd/motd
     fi
-    ln -snf /var/lib/update-motd/motd /etc/motd
+    ln -snf %{_sharedstatedir}/update-motd/motd %{_sysconfdir}/motd
 fi
 %systemd_post update-motd.service
 
@@ -59,13 +59,18 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%dir /etc/update-motd.d
-%dir /var/lib/update-motd
+%{_sbindir}/update-motd
 %config %{_unitdir}/update-motd.{service,timer}
-/usr/sbin/update-motd
-%ghost /var/lib/update-motd/motd
+%dir %{_sharedstatedir}/update-motd
+%dir %{_sysconfdir}/update-motd.d
+%ghost %{_sharedstatedir}/update-motd/motd
 
 %changelog
+* Thu Mar 14 2024 Keith Gable <gablk@amazon.com> - 2.3-1
+- Make update-motd.service depend on network-online.target and cloud-final.service
+  if available.
+- Change RPM spec to use macros for directories instead of hard-coded paths
+
 * Mon Feb 05 2024 Stewart Smith <trawets@amazon.com> - 2.2-1
 - Restrict startup and runtime CPU and IO usage
 
@@ -100,7 +105,7 @@ fi
 - Changed the random delay to 24 hours from 6 hours
 
 * Tue Oct 16 2018 iliana weller <iweller@amazon.com> - 1.1.2-2
-- Don't create an empty /etc/motd.rpmsave
+- Don't create an empty %{_sysconfdir}/motd.rpmsave
 
 * Mon Jul  9 2018 Chad Miller <millchad@amazon.com> - 1.1.2-1
 - Avoid deadlock with systemctlreload-thispackage and Wants:
@@ -138,7 +143,7 @@ fi
 * Wed Sep 21 2011 Andrew Jorgensen <ajorgens@amazon.com>
 - Copy the current motd on upgrade
 - Add an upgrade case to %post
-- Use /var/lib/update-motd instead of /var/run
+- Use %{_sharedstatedir}/update-motd instead of /var/run
 
 * Fri Sep 16 2011 Andrew Jorgensen <ajorgens@amazon.com>
 - Add a yum plugin to call update-motd after an rpm transaction, and support for disabling updates
