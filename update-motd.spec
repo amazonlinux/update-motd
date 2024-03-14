@@ -1,5 +1,5 @@
 Name:       update-motd
-Version:    2.2
+Version:    2.3
 Release:    1%{?dist}
 License:    ASL 2.0
 Summary:    Framework for dynamically generating MOTD
@@ -66,6 +66,9 @@ fi
 %ghost /var/lib/update-motd/motd
 
 %changelog
+* Thu Mar 14 2024 Keith Gable <gablk@amazon.com> - 2.3-1
+- Make update-motd.service depend on network-online.target and cloud-final.service
+  if available.
 * Mon Feb 05 2024 Stewart Smith <trawets@amazon.com> - 2.2-1
 - Restrict startup and runtime CPU and IO usage
 
