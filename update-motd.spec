@@ -17,7 +17,7 @@ Source2:    update-motd.service
 
 %description
 Framework and scripts for producing a dynamically generated Message Of The Day.
-Based on and compatible with the framework implemented Ubuntu.
+Based on and compatible with the framework implemented in Ubuntu.
 
 %install
 rm -rf %{buildroot}
