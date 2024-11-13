@@ -37,7 +37,7 @@ StartupCPUWeight=90
 # Run with less priority than other tasks by default
 CPUWeight=50
 # limit to a quarter of a core
-CPUQuota=25
+CPUQuota=25%
 # On startup, limit IO, but not by heaps
 StartupIOWeight=90
 # Run with less priority for IO than other task
