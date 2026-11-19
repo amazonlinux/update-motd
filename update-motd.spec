@@ -11,20 +11,21 @@ Requires:   system-release >= 2022
 BuildRequires: systemd-devel
 %{?systemd_requires}
 
-Source0:    sbin_update-motd
-Source1:    update-motd.timer
-Source2:    update-motd.service
+Source0:    %{url}/archive/refs/tags/%{name}-%{version}-%{release}.tar.gz
 
 %description
 Framework and scripts for producing a dynamically generated Message Of The Day.
 Based on and compatible with the framework implemented in Ubuntu.
 
+%prep
+%autosetup -n %{name}-%{name}-%{version}-%{release}
+
 %install
 rm -rf %{buildroot}
 install -d %{buildroot}%{_sysconfdir}/update-motd.d
-install -D -m 0755 %{SOURCE0} %{buildroot}%{_sbindir}/update-motd
-install -D -m 0644 %{SOURCE1} %{buildroot}%{_unitdir}/update-motd.timer
-install -D -m 0644 %{SOURCE2} %{buildroot}%{_unitdir}/update-motd.service
+install -D -m 0755 sbin_update-motd %{buildroot}%{_sbindir}/update-motd
+install -D -m 0644 update-motd.timer %{buildroot}%{_unitdir}/update-motd.timer
+install -D -m 0644 update-motd.service %{buildroot}%{_unitdir}/update-motd.service
 # for %ghost
 install -d %{buildroot}%{_sharedstatedir}/update-motd
 touch %{buildroot}%{_sharedstatedir}/update-motd/motd
