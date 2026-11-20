@@ -1,5 +1,5 @@
 Name:       update-motd
-Version:    2.3
+Version:    2.4
 Release:    1%{?dist}
 License:    ASL 2.0
 Summary:    Framework for dynamically generating MOTD
@@ -26,7 +26,6 @@ install -d %{buildroot}%{_sysconfdir}/update-motd.d
 install -D -m 0755 sbin_update-motd %{buildroot}%{_sbindir}/update-motd
 install -D -m 0644 update-motd.timer %{buildroot}%{_unitdir}/update-motd.timer
 install -D -m 0644 update-motd.service %{buildroot}%{_unitdir}/update-motd.service
-install -D -m 0644 update-motd-onboot.timer %{buildroot}%{_unitdir}/update-motd-onboot.timer
 # for %ghost
 install -d %{buildroot}%{_sharedstatedir}/update-motd
 touch %{buildroot}%{_sharedstatedir}/update-motd/motd
@@ -46,10 +45,10 @@ if [ "$1" = "1" ]; then
     fi
     ln -snf %{_sharedstatedir}/update-motd/motd %{_sysconfdir}/motd
 fi
-%systemd_post update-motd.service update-motd.timer update-motd-onboot.timer
+%systemd_post update-motd.service
 
 %preun
-%systemd_preun update-motd.service update-motd.timer update-motd-onboot.timer
+%systemd_preun update-motd.service
 
 %postun
 systemctl daemon-reload >/dev/null 2>&1 || :
@@ -63,12 +62,15 @@ fi
 %defattr(-,root,root,-)
 %{_sbindir}/update-motd
 %config %{_unitdir}/update-motd.{service,timer}
-%config %{_unitdir}/update-motd-onboot.timer
 %dir %{_sharedstatedir}/update-motd
 %dir %{_sysconfdir}/update-motd.d
 %ghost %{_sharedstatedir}/update-motd/motd
 
 %changelog
+* Fri Nov 20 2026 Joe Kurokawa <joekurok@amazon.com> - 2.4-1
+- New release
+- Upstream code to GitHub
+
 * Thu Mar 14 2024 Keith Gable <gablk@amazon.com> - 2.3-1
 - Make update-motd.service depend on network-online.target and cloud-final.service
   if available.
