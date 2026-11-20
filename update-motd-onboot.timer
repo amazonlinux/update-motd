@@ -1,0 +1,13 @@
+[Unit]
+Description=Initial Timer for Dynamically Generate Message Of The Day
+After=cloud-final.service
+
+[Timer]
+# Avoid competing with package operations during instance initialization.
+OnBootSec=15min
+RandomizedDelaySec=15min
+FixedRandomDelay=true
+Unit=update-motd.service
+
+[Install]
+WantedBy=timers.target
